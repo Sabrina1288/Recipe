@@ -1,12 +1,8 @@
 package de.tuxyhavoc.recipes;
 
-import java.util.Date;
 
 public interface Recipe {
-	
-	public Ingredient[] getIngredients();
+	public void setName(String name);
 	public String getName();
-	public Date getCreationDate();
-	public String[] getDirections();
-	
+	public String toString();
 }

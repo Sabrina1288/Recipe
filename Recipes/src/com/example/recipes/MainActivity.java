@@ -1,55 +1,53 @@
 package com.example.recipes;
 
-import java.util.Locale;
+import java.util.List;
 
+import de.tuxyhavoc.recipes.CookeryBook;
+import de.tuxyhavoc.recipes.CookeryBookImpl;
+import de.tuxyhavoc.recipes.Recipe;
 import android.os.Bundle;
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener {
 
+	CookeryBook cookeryBook;
+	//ListView listView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		deleteDatabase("recipes.db");
+		
 		setContentView(R.layout.activity_main);
-
-		SQLiteDatabase db;
-		db = openOrCreateDatabase("TestingData.db",
-				SQLiteDatabase.CREATE_IF_NECESSARY, null);
-		db.setVersion(1);
-		db.setLocale(Locale.getDefault());
+		
+		Button button = (Button)findViewById(R.id.StartButton);
+		
+		button.setOnClickListener(this);
 		
 		
-		//Create Table RECIPE
-		final String CREATE_TABLE_RECIPES =
-	            "CREATE TABLE tbl_recipes ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "recipes_name TEXT);";
-
-		//Create Table INGREDIENTS
-		final String CREATE_TABLE_INGREDIENTS =
-	            "CREATE TABLE tbl_ingredients ("
-	            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-	            + "ingredients_name TEXT);";
+		/*
+		System.out.println("Fetching recipes");
+		List<Recipe> recipes = cookeryBook.getRecipes();
 		
-		//Create Table INGREDIENTS
-				final String CREATE_TABLE_REC_HAS_INGR =
-			            "CREATE TABLE tbl_ingredients ("
-			            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			            + "recipes_id REFERENCES tbl_recipes(id) "
-		        		+ "ingredients_id REFERENCES tbl_ingredients(id);";
-							
+		for(Recipe recipe : recipes){
+			System.out.println(recipe.getName());
+		}
 		
+		listView = (ListView)findViewById(R.id.list);
 		
-		//Execute Create table
-		db.execSQL(CREATE_TABLE_RECIPES);
-		db.execSQL(CREATE_TABLE_INGREDIENTS);
-		db.execSQL(CREATE_TABLE_REC_HAS_INGR);
-		
-		
-		
-		
+		@SuppressWarnings("unchecked")
+		ArrayAdapter<Recipe> adapter = (ArrayAdapter<Recipe>)listView.getAdapter();
+		for(Recipe recipe : recipes)
+			adapter.add(recipe);
+			*/
 	}
 
 	@Override
@@ -57,6 +55,13 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void onClick(View v) {
+		Log.e("some Log", "some Log");
+		cookeryBook = new CookeryBookImpl(this);
+		
 	}
 
 }
